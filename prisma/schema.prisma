@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Skill {
+  id          String   @id @default(cuid())
+  name        String
+  iconName    String   @default("Code")
+  category    String   @default("Development")
+  description String   @default("")
+  level       Int      @default(50)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([sortOrder, name])
+  @@map("skills")
+}
+
+model PortfolioSettings {
+  id              String   @id @default("main")
+  displayName     String   @default("Thomas Makoye")
+  roles           String[] @default(["Full-Stack Developer", "System Administrator", "Graphic Designer"])
+  heroDescription String   @default("Bridging the gap between robust system administration, creative design, and innovative full-stack software engineering.")
+  aboutIntro      String   @default("I am a dedicated IT Officer and Full-Stack Developer. My career is fueled by a deep passion for both system administration and software engineering.")
+  aboutDescription String  @default("I believe understanding underlying infrastructure is just as important as writing clean, efficient code. From configuring robust Linux environments and containerizing applications to designing intuitive UI/UX with Inkscape and building complex React applications.")
+  profilePhotoUrl String   @default("")
+  updatedAt       DateTime @updatedAt
+
+  @@map("portfolio_settings")
+}
+
+model SoftwareProject {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  imageUrl    String   @default("")
+  repoUrl     String   @default("")
+  liveUrl     String   @default("")
+  tags        String[] @default([])
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([sortOrder, title])
+  @@map("software_projects")
+}
+
+model GraphicsMedia {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @default("")
+  type        String   @default("IMAGE")
+  mediaUrl    String
+  thumbnailUrl String  @default("")
+  tool        String   @default("")
+  tags        String[] @default([])
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([sortOrder, title])
+  @@map("graphics_media")
+}
