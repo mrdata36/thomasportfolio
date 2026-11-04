@@ -56,7 +56,8 @@ async function main() {
   ];
 
   for (const project of projects) {
-    await db.softwareProject.upsert({ where: { id: project.id }, create: project, update: project });
+    const existing = await db.softwareProject.findUnique({ where: { id: project.id }, select: { id: true } });
+    if (!existing) await db.softwareProject.create({ data: project });
   }
 
   await db.portfolioSettings.upsert({

@@ -17,16 +17,9 @@ A Next.js App Router portfolio with a PostgreSQL database managed by Prisma. Pub
 
 5. Open `/home`; sign in to `/admin` using `ADMIN_PASSWORD`.
 
-For production, deploy the complete Next.js application (including its API routes) to Vercel. PostgreSQL can be hosted on Render; use Render's **external** database URL as `DATABASE_URL` in Vercel. Set `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET` (at least 32 characters), and `BLOB_READ_WRITE_TOKEN` in Vercel project settings. Create a Vercel Blob store and add its read/write token before using profile-image uploads.
+For production, deploy the complete Next.js application (including its API routes) to Vercel. The Vercel build runs Prisma migrations and adds missing starter content before building. Set `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET` (at least 32 characters), and `BLOB_READ_WRITE_TOKEN` in Vercel project settings. Create a Vercel Blob store and add its read/write token before using profile-image uploads.
 
-Before the first production visit, apply migrations and optionally seed content using the Render external database URL:
-
-```sh
-npm run db:deploy
-npm run db:seed
-```
-
-Run these commands from a trusted local machine with `DATABASE_URL` set; do not commit database credentials. Vercel builds with `npm run build`. For future schema edits, create migrations using `npm run db:migrate -- --name <description>`.
+For future schema edits, create migrations using `npm run db:migrate -- --name <description>`. Starter seeding only adds records that do not already exist, preserving admin-edited content.
 
 ## Routes
 
@@ -40,4 +33,4 @@ Media may be supplied as an HTTPS image URL, a direct MP4/WebM/OGG URL, or a You
 
 The admin home-page settings allow editing the display name, typing-animation roles, hero description, about text, and profile photo. The photo can be supplied as an HTTP(S) URL or uploaded as a JPEG, PNG, WebP, or GIF (up to 5 MB). Uploads are stored in Vercel Blob so they persist across deployments.
 
-Skills include an editable description and self-assessed proficiency percentage. Apply migrations and run `npm run db:seed` to insert or update the starter skills and projects in PostgreSQL.
+Skills include an editable description and self-assessed proficiency percentage. Migrations and initial starter content are applied automatically during Vercel production builds.
